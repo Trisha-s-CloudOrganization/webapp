@@ -1,8 +1,5 @@
 package com.example.demo.ErrorHandeling;
 
-//public class UserStatus {
-//}
-
 public class UserStatus {
     private String usernameError;
     private String passwordError;
