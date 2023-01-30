@@ -31,7 +31,8 @@ public class UserController {
     }
     @PostMapping("/v1/user")
     public ResponseEntity<?>  addUser(@Valid @RequestBody User user , BindingResult errors, HttpServletResponse response) throws Exception{
-        UserStatus userStatus;
+//      public User  addUser(@Valid @RequestBody User user) throws Exception{
+            UserStatus userStatus;
         if(errors.hasErrors()) {
             userStatus = userService.getUserStatus(errors);
             //LOGGER.warn("Bad Request " + registrationStatus);
@@ -41,7 +42,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(user));
         }
 
-       // return userService.saveUser(user);
+//        return userService.saveUser(user);
     }
 
     //delete user: confirm if needed

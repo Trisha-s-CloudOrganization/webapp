@@ -10,5 +10,5 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("SELECT count(username) FROM User WHERE username=:username")
-    int isEmailPresent(@Param("username") String username);
+    public int isEmailPresent(@Param("username") String username);
 }
