@@ -2,6 +2,8 @@ package com.example.demo.service;
 
 import com.example.demo.ErrorHandeling.UserStatus;
 import com.example.demo.Repository.UserRepository;
+import com.example.demo.exception.DataNotFoundExeception;
+import com.example.demo.exception.UserAuthrizationExeception;
 import com.example.demo.model.CustomUserDetails;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,6 +38,7 @@ public class UserService implements UserDetailsService{
     }
 
     public void updateUser(User user, UUID id) {
+        user.setPassword(PassEncoder().encode(user.getPassword()));
         userRepository.setUserInfoById(user.getFirst_name(),user.getLast_name(), user.getPassword() ,id);
     }
 
@@ -62,5 +67,29 @@ public class UserService implements UserDetailsService{
         User user = userRepository.findByUsername(username);
         if(user==null) throw new UsernameNotFoundException("User with given emailId does not exist");
         else return new CustomUserDetails(user);
+    }
+
+    public boolean isAuthorised(UUID userId,String tokenEnc) throws DataNotFoundExeception, UserAuthrizationExeception {
+
+        User user=getUserDetailsAuth(userId);
+        byte[] token = Base64.getDecoder().decode(tokenEnc);
+        String decodedStr = new String(token, StandardCharsets.UTF_8);
+        String userName = decodedStr.split(":")[0];
+        String passWord = decodedStr.split(":")[1];
+        System.out.println("Value of Token" + " "+ decodedStr);
+        if(!(user.getUsername().equals(userName)) || !(PassEncoder().matches(passWord,user.getPassword()))){
+            throw new UserAuthrizationExeception("Forbidden to access");
+        }
+        return true;
+    }
+    public User getUserDetailsAuth(UUID userId) throws DataNotFoundExeception{
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isPresent()) {
+            return user.get();
+        }
+        throw new DataNotFoundExeception("User Not Found");
+    }
+    public BCryptPasswordEncoder PassEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
