@@ -20,17 +20,15 @@ mvn spring-boot:run
 ```
 
 
-##Assignment:
+## Assignment:
 
-Create a private Organization and repository. repository name must be webapp.
-
-(Continou Integration) Fork the GitHub repository in your namespace and do all development work on your fork.
-
-On completion of feature development sync the repo.
+Create a private Organization and repository. repository name must be webapp.<br/>
+(Continou Integration) Fork the GitHub repository in your namespace and do all development work on your fork.<br/>
+On completion of feature development sync the repo.<br/>
 
 Create a api:
-Create a new user
-As a user, I want to create an account by providing the following information.
+Create a new user<br/>
+A user want to create an account by providing the following information.<br/>
 Email Address
 Password
 First Name
