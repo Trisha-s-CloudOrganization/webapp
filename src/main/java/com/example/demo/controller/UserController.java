@@ -75,8 +75,8 @@ public class UserController {
             if(userId.toString().isBlank()||userId.toString().isEmpty()) {
                 throw new InvalidInputException("Enter Valid User Id");
             }
-            if(user.getId()!=null || user.getUsername()!=null || user.getAccount_created()!=null || user.getAccount_updated()!=null)
-                throw new InvalidInputException("Id, Username, creation date, last modified date can not be modified");
+            if(user.getId()!=null || user.getAccount_created()!=null || user.getAccount_updated()!=null)
+                throw new InvalidInputException("Id, creation date, last modified date can not be modified");
             userService.isAuthorised(userId,request.getHeader("Authorization").split(" ")[1]);
             if(error.hasErrors()) {
                 String response = error.getAllErrors().stream().map(ObjectError::getDefaultMessage)
