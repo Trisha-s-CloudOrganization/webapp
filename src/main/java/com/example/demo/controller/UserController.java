@@ -71,36 +71,6 @@ public class UserController {
     //update user by UUID id
     @RequestMapping(path = "/v1/user/{userId}", method = RequestMethod.PUT)
     public ResponseEntity<?> updateUser(@PathVariable UUID userId , @RequestBody User user ,HttpServletRequest request, Errors error) {
-
-        //raghav method start
-        //metricsClient.incrementCounter("endpoint./v1/.account.id.http.put");
-
-//        Optional<User> u = null;
-//        try {
-//            u = userRepository.findById(userId);
-//            System.out.println(user);
-//        }
-//        catch (Exception e){
-//            LOGGER.warn("Bad Request");
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
-//        }
-//
-//        String loggedUser = "";
-//        String username = "";
-//        String password = "";
-//
-//        try {
-//            loggedUser = authenticatedUser(request);
-//            username = loggedUser.split(" ")[0];
-//            password = loggedUser.split(" ")[1];
-//        }
-//        catch(Exception e){
-//            LOGGER.warn("Unauthorized to access");
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication Error");
-//        }
-        //raghav method end
-
-        //anurag method start
         try {
             if(userId.toString().isBlank()||userId.toString().isEmpty()) {
                 throw new InvalidInputException("Enter Valid User Id");
@@ -130,10 +100,6 @@ public class UserController {
         catch(Exception e) {
             return new ResponseEntity<String>(UserConstants.InternalErr,HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        //anurag method end
-
-//        userService.updateUser(user,userId);
-//        return ResponseEntity.status(HttpStatus.CREATED).body("User Updated");
     }
 
     @RequestMapping(path = "/v1/user/{userId}", method = RequestMethod.GET)

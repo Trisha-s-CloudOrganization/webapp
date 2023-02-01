@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
@@ -25,7 +26,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Modifying
     @Transactional
-    @Query("update User u set u.first_name =:first_name, u.last_name =:last_name, u.password =:password where u.id =:id")
-    public int setUserInfoById(@Param("first_name") String first_name, @Param("last_name") String last_name, @Param("password") String password, @Param("id") UUID id);
+    @Query("update User u set u.first_name =:first_name, u.last_name =:last_name, u.password =:password, u.account_updated =:localDateTime where u.id =:id")
+    public int setUserInfoById(@Param("first_name") String first_name, @Param("last_name") String last_name, @Param("password") String password, @Param("localDateTime") LocalDateTime localDateTime, @Param("id") UUID id);
 
 }

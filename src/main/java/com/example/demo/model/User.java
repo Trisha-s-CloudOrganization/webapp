@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.http.ResponseEntity;
 
 import javax.validation.constraints.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -38,15 +39,15 @@ public class User {
     private String password;
     @CreationTimestamp
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Date account_created;
+    private LocalDateTime account_created;
     @UpdateTimestamp
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Date account_updated;
+    private LocalDateTime account_updated;
 
     public User() {
     }
 
-    public User(UUID id, String fname, String lname, String username, String password, Date creation_time, Date update_time) {
+    public User(UUID id, String fname, String lname, String username, String password, LocalDateTime creation_time, LocalDateTime update_time) {
         //super();
         this.id = id;
         this.first_name = fname;
@@ -98,19 +99,19 @@ public class User {
         this.password = password;
     }
 
-    public Date getAccount_created() {
+    public LocalDateTime getAccount_created() {
         return account_created;
     }
 
-    public void setAccount_created(Date creation_time) {
+    public void setAccount_created(LocalDateTime creation_time) {
         this.account_created = creation_time;
     }
 
-    public Date getAccount_updated() {
+    public LocalDateTime getAccount_updated() {
         return account_updated;
     }
 
-    public void setAccount_updated(Date update_time) {
+    public void setAccount_updated(LocalDateTime update_time) {
         this.account_updated = update_time;
     }
 

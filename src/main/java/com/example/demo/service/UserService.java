@@ -19,10 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService implements UserDetailsService{
@@ -39,7 +36,8 @@ public class UserService implements UserDetailsService{
 
     public void updateUser(User user, UUID id) {
         user.setPassword(PassEncoder().encode(user.getPassword()));
-        userRepository.setUserInfoById(user.getFirst_name(),user.getLast_name(), user.getPassword() ,id);
+        user.setAccount_updated(LocalDateTime.now());
+        userRepository.setUserInfoById(user.getFirst_name(),user.getLast_name(), user.getPassword() ,user.getAccount_updated(),id);
     }
 
     public Optional<User> fetchUserbyId(UUID id){
