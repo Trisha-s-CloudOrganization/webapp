@@ -105,6 +105,8 @@ public class UserController {
             if(userId.toString().isBlank()||userId.toString().isEmpty()) {
                 throw new InvalidInputException("Enter Valid User Id");
             }
+            if(user.getId()!=null || user.getUsername()!=null || user.getAccount_created()!=null || user.getAccount_updated()!=null)
+                throw new InvalidInputException("Id, Username, creation date, last modified date can not be modified");
             userService.isAuthorised(userId,request.getHeader("Authorization").split(" ")[1]);
             if(error.hasErrors()) {
                 String response = error.getAllErrors().stream().map(ObjectError::getDefaultMessage)
@@ -133,6 +135,33 @@ public class UserController {
 //        userService.updateUser(user,userId);
 //        return ResponseEntity.status(HttpStatus.CREATED).body("User Updated");
     }
+
+    @RequestMapping(path = "/v1/user/{userId}", method = RequestMethod.GET)
+    public ResponseEntity<?> fetchUserByID(@PathVariable UUID userId, HttpServletRequest request) {
+        try {
+            if(userId.toString().isBlank()||userId.toString().isEmpty()) {
+                throw new InvalidInputException("Enter Valid User Id");
+            }
+            userService.isAuthorised(userId,request.getHeader("Authorization").split(" ")[1]);
+            return ResponseEntity.status(HttpStatus.OK).body(userService.fetchUserbyId(userId));
+        } catch (InvalidInputException e) {
+            // TODO Auto-generated catch block
+            return new ResponseEntity<String>( e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+        catch (UserAuthrizationExeception e) {
+            // TODO Auto-generated catch block
+            return new ResponseEntity<String>( e.getMessage(),HttpStatus.FORBIDDEN);
+        }
+        catch (DataNotFoundExeception e) {
+            // TODO Auto-generated catch block
+            return new ResponseEntity<String>( e.getMessage(),HttpStatus.NOT_FOUND);
+        }
+        catch(Exception e) {
+            return new ResponseEntity<String>(UserConstants.InternalErr,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        //return ResponseEntity.status(HttpStatus.OK).body(userService.fetchUserbyId(userId));
+    }
+
     @RequestMapping(path = "/healthz", method = RequestMethod.GET)
     public void healthZ() {}
 
@@ -140,7 +169,6 @@ public class UserController {
         String tokenEnc = request.getHeader("Authorization").split(" ")[1];
         byte[] token = Base64.getDecoder().decode(tokenEnc);
         String decodedStr = new String(token, StandardCharsets.UTF_8);
-
         String userName = decodedStr.split(":")[0];
         String passWord = decodedStr.split(":")[1];
         System.out.println("Value of Token" + " "+ decodedStr);

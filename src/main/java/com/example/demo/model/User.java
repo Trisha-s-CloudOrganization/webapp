@@ -46,8 +46,9 @@ public class User {
     public User() {
     }
 
-    public User(String fname, String lname, String username, String password, Date creation_time, Date update_time) {
+    public User(UUID id, String fname, String lname, String username, String password, Date creation_time, Date update_time) {
         //super();
+        this.id = id;
         this.first_name = fname;
         this.last_name = lname;
         this.username = username;

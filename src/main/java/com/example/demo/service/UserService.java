@@ -42,6 +42,10 @@ public class UserService implements UserDetailsService{
         userRepository.setUserInfoById(user.getFirst_name(),user.getLast_name(), user.getPassword() ,id);
     }
 
+    public Optional<User> fetchUserbyId(UUID id){
+        return userRepository.findById(id);
+    }
+
     public List<User> getUsers(){
         return userRepository.findAll();
     }
