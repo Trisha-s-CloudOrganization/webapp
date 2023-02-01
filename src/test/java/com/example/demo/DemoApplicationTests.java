@@ -18,7 +18,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -36,15 +38,11 @@ class DemoApplicationTests {
 	@MockBean
 	private UserRepository repository;
 
-//	@Test
-//	public void saveUserTest() {
-//		User user = new User("erinn", "macri", "macri@gmail.com", "macri", new Date(), new Date());
-//		when(repository.save(user)).thenReturn(user);
-//		assertEquals(user, service.saveUser(user));
-//	}
-
-//	@Test
-//	public void contextLoads() {
-//	}
-
+	@Test
+	public void saveUserTest() {
+		User user = new User(UUID.randomUUID(),"kk", "K", "a1100@dddfgii.com", "sdsdssscdD@2", LocalDateTime.now(), LocalDateTime.now());
+		String username = "a1100@dddfgii.com";
+		when(repository.findByUsername(username)).thenReturn(user);
+		assertEquals(user.getUsername(), service.loadUserByUsername(username).getUsername());
+	}
 }
