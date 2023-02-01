@@ -7,6 +7,8 @@ import com.example.demo.service.UserService;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,12 +32,13 @@ import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ContextConfiguration(classes = { DemoApplicationTests.class })
 class DemoApplicationTests {
 
-	@Autowired
+	@InjectMocks
 	private UserService service;
 
-	@MockBean
+	@Mock
 	private UserRepository repository;
 
 	@Test
