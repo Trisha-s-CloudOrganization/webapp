@@ -10,6 +10,10 @@ import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.UUID;
 
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.SqlTypes;
+
 @Entity
 @Table
 public class User {
@@ -17,6 +21,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JdbcTypeCode(SqlTypes.CHAR)
     private UUID id;
     @NotBlank(message = "enter valid as first_name")
     private String first_name;

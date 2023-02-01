@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.ErrorHandeling.UserStatus;
+import com.example.demo.Repository.UserRepository;
 import com.example.demo.Validator.UserValidator;
 import com.example.demo.service.UserService;
 import com.example.demo.model.User;
@@ -11,9 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.WebDataBinder;
+import jakarta.servlet.http.HttpServletRequest;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.UUID;
 
 @RestController
 //@RequestMapping(path = "api/user")
@@ -22,6 +26,9 @@ public class UserController {
     // create user
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
     @Autowired
     private UserValidator userValidator;
 
@@ -41,21 +48,27 @@ public class UserController {
             //return ResponseEntity.status(HttpStatus.CREATED).body("");
             return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(user));
         }
-
-//        return userService.saveUser(user);
     }
 
-    //delete user: confirm if needed
+    @RequestMapping(path = "/v1/user/{userId}", method = RequestMethod.PUT)
+    public ResponseEntity<?> updateUser(@PathVariable UUID userId , @RequestBody User user ) {
+        userService.updateUser(user,userId);
+        return ResponseEntity.status(HttpStatus.CREATED).body("User Updated");
+    }
+    @RequestMapping(path = "/healthz", method = RequestMethod.GET)
+    public void healthZ() {}
 
+    private String authenticatedUser(HttpServletRequest request){
 
-    //update user(fname,lname,password)
+        String tokenEnc = request.getHeader("Authorization").split(" ")[1];
+        byte[] token = Base64.getDecoder().decode(tokenEnc);
+        String decodedStr = new String(token, StandardCharsets.UTF_8);
 
+        String userName = decodedStr.split(":")[0];
+        String passWord = decodedStr.split(":")[1];
+        System.out.println("Value of Token" + " "+ decodedStr);
 
+        return (userName + " " + passWord);
 
-    // get all user by email
-//    @JsonIgnoreProperties(value = {"password"})
-    @GetMapping("/v1/user/{userId}")
-    public List<User> getUsers(){
-        return userService.getUsers();
     }
 }

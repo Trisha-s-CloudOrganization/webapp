@@ -9,7 +9,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 import org.passay.*;
 import java.util.Arrays;
-@Component
+
 public class UserValidator implements Validator {
     @Autowired
     private UserService userService;
