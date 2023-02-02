@@ -39,7 +39,7 @@ Password should never be returned in the response payload.<br/>
 As a user, I expect to use my email address as my username.<br/>
 Application must return 400 Bad Request HTTP response code when a user account with the email address already exists.<br/>
 As a user, I expect my password to be stored securely using the BCrypt password hashing scheme Links to an external site. with salt Links to an external site..<br/>
-Update user information<br/>
+Update user inf ormation<br/>
 As a user, I want to update my account information. I should only be allowed to update the following fields.<br/>
 First Name<br/>
 Last Name<br/>
