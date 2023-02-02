@@ -47,7 +47,7 @@ Password<br/>
 Attempt to update any other field should return 400 Bad Request HTTP response code.<br/>
 account_updated field for the user should be updated when the user update is successful.<br/>
 A user can only update their own account information.<br/>
-Get user information<br/>
+Get User Information<br/>
 As a user, I want to get my account information. Response payload should return all fields for the user except for password.<br/>
 
 API - <br/>
