@@ -4,7 +4,6 @@ on:
     branches: [ main ]
   push:
     branches: [ main ]
-    
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,3 +18,4 @@ jobs:
       run: mvn clean install
     - name: Test
       run: mvn test -DskipTests-false
+
