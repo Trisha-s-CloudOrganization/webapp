@@ -55,7 +55,7 @@ API - <br/>
 'http://localhost:8080/v1/user/{userid}'<br/>
 'http://localhost:3000/healthz'<br/>
 <br/>
-Some GitHub Commands<br/>
+Useful GitHub Commands<br/>
 
 git status<br/>
 git init<br/>
