@@ -36,7 +36,7 @@ Last Name<br/>
 account_created field for the user should be set to the current time when user creation is successful.<br/>
 Users should not be able to set values for account_created and account_updated. Any value provided for these fields must be ignored.<br/>
 Password should never be returned in the response payload.<br/>
-As a user, I expect to use my email address as my username.<br/>
+As a user,  I expect to use my email address as my username.<br/>
 Application must return 400 Bad Request HTTP response code when a user account with the email address already exists.<br/>
 As a user, I expect my password to be stored securely using the BCrypt password hashing scheme Links to an external site. with salt Links to an external site..<br/>
 Update user inf ormation<br/>
