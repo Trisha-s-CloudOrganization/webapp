@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.ErrorHandeling.UserStatus;
 import com.example.demo.Repository.UserRepository;
 import com.example.demo.exception.DataNotFoundExeception;
+import com.example.demo.exception.InvalidInputException;
 import com.example.demo.exception.UserAuthrizationExeception;
 import com.example.demo.model.CustomUserDetails;
 import com.example.demo.model.User;
@@ -34,13 +35,13 @@ public class UserService implements UserDetailsService{
        return userRepository.save(user);
     }
 
-    public void updateUser(User user, UUID id) {
+    public void updateUser(User user, int id) {
         user.setPassword(PassEncoder().encode(user.getPassword()));
         user.setAccount_updated(LocalDateTime.now());
         userRepository.setUserInfoById(user.getFirst_name(),user.getLast_name(), user.getPassword() ,user.getAccount_updated(),id);
     }
 
-    public Optional<User> fetchUserbyId(UUID id){
+    public Optional<User> fetchUserbyId(int id){
         return userRepository.findById(id);
     }
 
@@ -71,7 +72,7 @@ public class UserService implements UserDetailsService{
         else return new CustomUserDetails(user);
     }
 
-    public boolean isAuthorised(UUID userId,String tokenEnc) throws DataNotFoundExeception, UserAuthrizationExeception {
+    public boolean isAuthorisedForGet(int userId,String tokenEnc) throws DataNotFoundExeception, UserAuthrizationExeception {
 
         User user=getUserDetailsAuth(userId);
         byte[] token = Base64.getDecoder().decode(tokenEnc);
@@ -84,7 +85,23 @@ public class UserService implements UserDetailsService{
         }
         return true;
     }
-    public User getUserDetailsAuth(UUID userId) throws DataNotFoundExeception{
+    public boolean isAuthorisedForPut(int userId,String tokenEnc, User userRequest) throws DataNotFoundExeception, UserAuthrizationExeception,InvalidInputException {
+
+        User user=getUserDetailsAuth(userId);
+        byte[] token = Base64.getDecoder().decode(tokenEnc);
+        String decodedStr = new String(token, StandardCharsets.UTF_8);
+        String userName = decodedStr.split(":")[0];
+        String passWord = decodedStr.split(":")[1];
+        System.out.println("Value of Token" + " "+ decodedStr);
+        if(!userRequest.getUsername().equals(userName)){
+            throw new InvalidInputException("Enter correct username");
+        }
+        if(!(user.getUsername().equals(userName)) || !(PassEncoder().matches(passWord,user.getPassword()))){
+            throw new UserAuthrizationExeception("Forbidden to access");
+        }
+        return true;
+    }
+    public User getUserDetailsAuth(int userId) throws DataNotFoundExeception{
         Optional<User> user = userRepository.findById(userId);
         if (user.isPresent()) {
             return user.get();

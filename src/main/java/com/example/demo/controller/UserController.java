@@ -58,6 +58,8 @@ public class UserController {
     public ResponseEntity<?>  addUser(@Valid @RequestBody User user , BindingResult errors, HttpServletResponse response) throws Exception{
 //      public User  addUser(@Valid @RequestBody User user) throws Exception{
             UserStatus userStatus;
+        if(user.getId() != 0 || user.getAccount_created()!=null || user.getAccount_updated()!=null)
+            throw new InvalidInputException("Id, creation date, last modified date can not be modified");
         if(errors.hasErrors()) {
             userStatus = userService.getUserStatus(errors);
             //LOGGER.warn("Bad Request " + registrationStatus);
@@ -70,14 +72,14 @@ public class UserController {
 
     //update user by UUID id
     @RequestMapping(path = "/v1/user/{userId}", method = RequestMethod.PUT)
-    public ResponseEntity<?> updateUser(@PathVariable UUID userId , @RequestBody User user ,HttpServletRequest request, Errors error) {
+    public ResponseEntity<?> updateUser(@PathVariable int userId , @RequestBody User user ,HttpServletRequest request, Errors error) {
         try {
-            if(userId.toString().isBlank()||userId.toString().isEmpty()) {
+            if(userId == 0) {
                 throw new InvalidInputException("Enter Valid User Id");
             }
-            if(user.getId()!=null || user.getAccount_created()!=null || user.getAccount_updated()!=null)
+            if(user.getId() != 0 || user.getAccount_created()!=null || user.getAccount_updated()!=null)
                 throw new InvalidInputException("Id, creation date, last modified date can not be modified");
-            userService.isAuthorised(userId,request.getHeader("Authorization").split(" ")[1]);
+            userService.isAuthorisedForPut(userId,request.getHeader("Authorization").split(" ")[1],user);
             if(error.hasErrors()) {
                 String response = error.getAllErrors().stream().map(ObjectError::getDefaultMessage)
                         .collect(Collectors.joining(","));
@@ -103,12 +105,12 @@ public class UserController {
     }
 
     @RequestMapping(path = "/v1/user/{userId}", method = RequestMethod.GET)
-    public ResponseEntity<?> fetchUserByID(@PathVariable UUID userId, HttpServletRequest request) {
+    public ResponseEntity<?> fetchUserByID(@PathVariable int userId, HttpServletRequest request) {
         try {
-            if(userId.toString().isBlank()||userId.toString().isEmpty()) {
+            if(userId == 0) {
                 throw new InvalidInputException("Enter Valid User Id");
             }
-            userService.isAuthorised(userId,request.getHeader("Authorization").split(" ")[1]);
+            userService.isAuthorisedForGet(userId,request.getHeader("Authorization").split(" ")[1]);
             return ResponseEntity.status(HttpStatus.OK).body(userService.fetchUserbyId(userId));
         } catch (InvalidInputException e) {
             // TODO Auto-generated catch block

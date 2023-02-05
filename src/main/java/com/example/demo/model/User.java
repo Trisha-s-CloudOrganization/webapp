@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.UUID;
+//import java.util.UUID;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
@@ -19,11 +19,11 @@ import org.hibernate.type.SqlTypes;
 @Table
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue()
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @JdbcTypeCode(SqlTypes.CHAR)
-    private UUID id;
+    //@JdbcTypeCode(SqlTypes.CHAR)
+    private int id;
     @NotBlank(message = "enter valid as first_name")
     private String first_name;
     @NotBlank(message = "enter valid as last_name")
@@ -47,7 +47,7 @@ public class User {
     public User() {
     }
 
-    public User(UUID id, String fname, String lname, String username, String password, LocalDateTime creation_time, LocalDateTime update_time) {
+    public User(int id, String fname, String lname, String username, String password, LocalDateTime creation_time, LocalDateTime update_time) {
         //super();
         this.id = id;
         this.first_name = fname;
@@ -58,11 +58,11 @@ public class User {
         this.account_updated = update_time;
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 
