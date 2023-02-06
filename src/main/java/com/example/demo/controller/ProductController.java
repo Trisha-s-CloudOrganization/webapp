@@ -12,6 +12,7 @@ import com.example.demo.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -54,6 +55,10 @@ public class ProductController {
                 return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
             }
             catch(Exception e) {
+                if (e instanceof DataIntegrityViolationException) {
+                    //handle Internal server error 500
+                    return new ResponseEntity<String>( "Enter Valid data. Make sure SKU is unique",HttpStatus.BAD_REQUEST);
+                }
                 return new ResponseEntity<String>(UserConstants.InternalErr,HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
@@ -90,6 +95,10 @@ public class ProductController {
             return new ResponseEntity<String>( e.getMessage(),HttpStatus.BAD_REQUEST);
         }
         catch(Exception e) {
+            if (e instanceof DataIntegrityViolationException) {
+                //handle Internal server error 500
+                return new ResponseEntity<String>( "Enter Valid data. Make sure SKU is unique",HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity<String>(UserConstants.InternalErr,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -145,6 +154,10 @@ public class ProductController {
             return new ResponseEntity<String>( e.getMessage(),HttpStatus.BAD_REQUEST);
         }
         catch(Exception e) {
+            if (e instanceof DataIntegrityViolationException) {
+                //handle Internal server error 500
+                return new ResponseEntity<String>( "Enter Valid data. Make sure SKU is unique",HttpStatus.BAD_REQUEST);
+            }
             return new ResponseEntity<String>(UserConstants.InternalErr,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
