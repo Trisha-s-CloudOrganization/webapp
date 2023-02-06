@@ -5,6 +5,7 @@ import com.example.demo.Repository.UserRepository;
 import com.example.demo.exception.DataNotFoundExeception;
 import com.example.demo.exception.InvalidInputException;
 import com.example.demo.exception.UserAuthrizationExeception;
+import com.example.demo.exception.UserNameNotFoundException;
 import com.example.demo.model.CustomUserDetails;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,10 @@ public class UserService implements UserDetailsService{
         else return new CustomUserDetails(user);
     }
 
+    public User getUserByUsername(String username){
+        return userRepository.findByUsername(username);
+   }
+
     public boolean isAuthorisedForGet(int userId,String tokenEnc) throws DataNotFoundExeception, UserAuthrizationExeception {
 
         User user=getUserDetailsAuth(userId);
@@ -86,7 +91,6 @@ public class UserService implements UserDetailsService{
         return true;
     }
     public boolean isAuthorisedForPut(int userId,String tokenEnc, User userRequest) throws DataNotFoundExeception, UserAuthrizationExeception,InvalidInputException {
-
         User user=getUserDetailsAuth(userId);
         byte[] token = Base64.getDecoder().decode(tokenEnc);
         String decodedStr = new String(token, StandardCharsets.UTF_8);
