@@ -1,11 +1,12 @@
 name: Continues Integration Workflow
 
 on: 
- pull_request:
-  branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
