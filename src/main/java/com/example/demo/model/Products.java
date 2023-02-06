@@ -23,11 +23,12 @@ public class Products {
     private int owner_user_id;
     private String product_name;
     private String description;
+    @Column(unique = true)
     private String sku;
     private String manufacturer;
 
     @NotBlank(message = "enter valid as product_qty")
-    @Min(value = 1, message = "Product quality should be more than 0")
+    @Min(value = 0, message = "Product quality should be more than 0")
     @Max(value = 2147483647, message = "Product Quantity is too big") // MAX_INT
     private int product_qty; // if product_qty not in range then 500 Internal Server Error
 
