@@ -1,4 +1,4 @@
-# CSYE6225- Cloud Computing Assignment 1
+# CSYE6225 - Cloud Computing Assignment 1
 
 Web application - Spring Boot<br/>
 
