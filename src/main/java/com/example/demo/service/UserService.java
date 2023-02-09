@@ -2,10 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.ErrorHandeling.UserStatus;
 import com.example.demo.Repository.UserRepository;
-import com.example.demo.exception.DataNotFoundExeception;
-import com.example.demo.exception.InvalidInputException;
-import com.example.demo.exception.UserAuthrizationExeception;
-import com.example.demo.exception.UserNameNotFoundException;
+import com.example.demo.exception.*;
 import com.example.demo.model.CustomUserDetails;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +38,6 @@ public class UserService implements UserDetailsService{
         user.setAccount_updated(LocalDateTime.now());
         userRepository.setUserInfoById(user.getFirst_name(),user.getLast_name(), user.getPassword() ,user.getAccount_updated(),id);
     }
-
     public Optional<User> fetchUserbyId(int id){
         return userRepository.findById(id);
     }
@@ -77,31 +73,32 @@ public class UserService implements UserDetailsService{
         return userRepository.findByUsername(username);
    }
 
-    public boolean isAuthorisedForGet(int userId,String tokenEnc) throws DataNotFoundExeception, UserAuthrizationExeception {
-
+    public boolean isAuthorisedForGet(int userId,String tokenEnc) throws DataNotFoundExeception, UserAuthrizationExeception, ForbidenAccess {
         User user=getUserDetailsAuth(userId);
         byte[] token = Base64.getDecoder().decode(tokenEnc);
         String decodedStr = new String(token, StandardCharsets.UTF_8);
         String userName = decodedStr.split(":")[0];
         String passWord = decodedStr.split(":")[1];
+        authUsernamePwd(userName,passWord);
         System.out.println("Value of Token" + " "+ decodedStr);
         if(!(user.getUsername().equals(userName)) || !(PassEncoder().matches(passWord,user.getPassword()))){
-            throw new UserAuthrizationExeception("Forbidden to access");
+            throw new ForbidenAccess("Forbidden to access");
         }
         return true;
     }
-    public boolean isAuthorisedForPut(int userId,String tokenEnc, User userRequest) throws DataNotFoundExeception, UserAuthrizationExeception,InvalidInputException {
-        User user=getUserDetailsAuth(userId);
+    public boolean isAuthorisedForPut(int userId,String tokenEnc, User userRequest) throws DataNotFoundExeception, UserAuthrizationExeception,InvalidInputException,ForbidenAccess {
         byte[] token = Base64.getDecoder().decode(tokenEnc);
         String decodedStr = new String(token, StandardCharsets.UTF_8);
         String userName = decodedStr.split(":")[0];
         String passWord = decodedStr.split(":")[1];
+        authUsernamePwd(userName,passWord);
         System.out.println("Value of Token" + " "+ decodedStr);
         if(!userRequest.getUsername().equals(userName)){
             throw new InvalidInputException("Enter correct username");
         }
+        User user=getUserDetailsAuth(userId);
         if(!(user.getUsername().equals(userName)) || !(PassEncoder().matches(passWord,user.getPassword()))){
-            throw new UserAuthrizationExeception("Forbidden to access");
+            throw new ForbidenAccess("Forbidden to access");
         }
         return true;
     }
@@ -111,6 +108,17 @@ public class UserService implements UserDetailsService{
             return user.get();
         }
         throw new DataNotFoundExeception("User Not Found");
+    }
+    public Boolean authUsernamePwd(String username, String pwd) throws DataNotFoundExeception{
+        try {
+            User user = userRepository.findByUsername(username);
+            if (!(PassEncoder().matches(pwd,user.getPassword()))) {
+                throw new DataNotFoundExeception("Invalid Username/password");
+            }
+        }catch (Exception e){
+            throw new DataNotFoundExeception("Username not found");
+        }
+        return null;
     }
     public BCryptPasswordEncoder PassEncoder() {
         return new BCryptPasswordEncoder();
