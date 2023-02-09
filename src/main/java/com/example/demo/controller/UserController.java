@@ -34,22 +34,13 @@ import org.slf4j.LoggerFactory;
 @RestController
 //@RequestMapping(path = "api/user")
 public class UserController {
-
-    // create user
     @Autowired
     private UserService userService;
-
-    //@Autowired
-    //private StatsDClient metricsClient;
-
-
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private UserValidator userValidator;
-
     private final static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
-
     @InitBinder
     private void initBinder(WebDataBinder binder) {
         binder.setValidator(userValidator);
