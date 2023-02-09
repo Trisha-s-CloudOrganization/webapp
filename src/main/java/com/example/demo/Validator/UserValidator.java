@@ -30,7 +30,7 @@ public class UserValidator implements Validator {
         User user = (User) target;
 
         if(!user.getUsername().matches("^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")) errors.rejectValue("username", "username format is wrong");
-
+        //if(user.getId()!=0)errors.rejectValue("id","id can not added by user");
         PasswordValidator validator = new PasswordValidator(Arrays.asList(
                 new LengthRule(9, 30),
                 new CharacterRule(EnglishCharacterData.UpperCase, 1),

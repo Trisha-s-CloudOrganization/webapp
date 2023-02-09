@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.http.ResponseEntity;
 
 import javax.validation.constraints.*;
@@ -21,8 +22,9 @@ public class User {
     @Id
     @GeneratedValue()
     @Column(nullable = false)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.READ_ONLY)
     //@JdbcTypeCode(SqlTypes.CHAR)
+    @ReadOnlyProperty
     private int id;
     @NotBlank(message = "enter valid as first_name")
     private String first_name;
@@ -38,10 +40,12 @@ public class User {
     @NotBlank(message = "enter password")
     private String password;
     @CreationTimestamp
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ReadOnlyProperty
     private LocalDateTime account_created;
     @UpdateTimestamp
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ReadOnlyProperty
     private LocalDateTime account_updated;
 
     public User() {
@@ -56,6 +60,14 @@ public class User {
         this.password = password;
         this.account_created = creation_time;
         this.account_updated = update_time;
+    }
+
+    public User(String fname, String lname, String username, String password) {
+        //super();
+        this.first_name = fname;
+        this.last_name = lname;
+        this.username = username;
+        this.password = password;
     }
 
     public int getId() {
@@ -127,4 +139,15 @@ public class User {
                 ", account_updated=" + account_updated +
                 '}';
     }
+//        @Override
+//    public String toString() {
+//        return "User{" +
+//
+//                ", first_name='" + first_name + '\'' +
+//                ", last_name='" + last_name + '\'' +
+//                ", username='" + username + '\'' +
+//                ", password='" + password + '\'' +
+//                '}';
+//    }
+
 }

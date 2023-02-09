@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.ReadOnlyProperty;
+import org.springframework.format.annotation.NumberFormat;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 @Entity
 @Table
@@ -30,13 +30,17 @@ public class Products {
     @NotBlank(message = "enter valid as product_qty")
     @Min(value = 0, message = "Product quality should be more than 0")
     @Max(value = 2147483647, message = "Product Quantity is too big") // MAX_INT
+    @Positive(message = "Enter valid product quantity")
+    @Digits(message="Number should contain 10 digits.",fraction=0, integer=10)
     private int product_qty; // if product_qty not in range then 500 Internal Server Error
 
     @CreationTimestamp
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ReadOnlyProperty
     private LocalDateTime date_added;
     @UpdateTimestamp
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    //@JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ReadOnlyProperty
     private LocalDateTime date_last_updated;
 
     public Products(int id, int owner_user_id, String product_name, String description, String sku, String manufacturer, int product_qty, LocalDateTime date_added, LocalDateTime date_last_updated) {

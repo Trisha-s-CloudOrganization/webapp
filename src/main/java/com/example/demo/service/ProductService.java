@@ -1,9 +1,6 @@
 package com.example.demo.service;
 import com.example.demo.Repository.ProductRepository;
-import com.example.demo.exception.DataNotFoundExeception;
-import com.example.demo.exception.InvalidInputException;
-import com.example.demo.exception.UserAuthrizationExeception;
-import com.example.demo.exception.UserNameNotFoundException;
+import com.example.demo.exception.*;
 import com.example.demo.model.Products;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +30,15 @@ public class ProductService {
         return productRepository.update(products.getProduct_name(), products.getDescription(), products.getSku(), products.getManufacturer(), products.getProduct_qty(), productId);
     }
 
-    public void deleteProduct(int productId){
+    public void deleteProduct(int productId) throws DataNotFoundExeception{
         productRepository.delete(getProductById(productId));
     }
 
-    public Products getProductById(int id){
-        return productRepository.getReferenceById(id);
+    public Products getProductById(int id) throws DataNotFoundExeception{
+        Products p = productRepository.getById(id);
+        if(p==null)
+            throw new DataNotFoundExeception("Product does not exist");
+        return p;
     }
 
     public boolean isAuthorisedForGet(int productId, String tokenEnc) throws DataNotFoundExeception, UserAuthrizationExeception {
@@ -50,12 +50,13 @@ public class ProductService {
         String userName = decodedStr.split(":")[0];
         String passWord = decodedStr.split(":")[1];
         System.out.println("Value of Token" + " "+ decodedStr);
+        userService.authUsernamePwd(userName,passWord);
         if(!(user.get().getUsername().equals(userName)) || !(PassEncoder().matches(passWord,user.get().getPassword()))){
             throw new UserAuthrizationExeception("Forbidden to access");
         }
         return true;
     }
-    public boolean isAuthorisedForPut(int productId,String tokenEnc, Products productsRequest) throws DataNotFoundExeception, UserAuthrizationExeception, InvalidInputException {
+    public boolean isAuthorisedForPut(int productId,String tokenEnc, Products productsRequest) throws DataNotFoundExeception, UserAuthrizationExeception, InvalidInputException, ForbidenAccess {
         int userId = getUserDetailsAuth(productId).getOwner_user_id();
         Optional<User> user = userService.fetchUserbyId(userId);
         byte[] token = Base64.getDecoder().decode(tokenEnc);
@@ -63,8 +64,9 @@ public class ProductService {
         String userName = decodedStr.split(":")[0];
         String passWord = decodedStr.split(":")[1];
         System.out.println("Value of Token" + " "+ decodedStr);
+        userService.authUsernamePwd(userName,passWord);
         if(!(user.get().getUsername().equals(userName)) || !(PassEncoder().matches(passWord,user.get().getPassword()))){
-            throw new UserAuthrizationExeception("Forbidden to access");
+            throw new ForbidenAccess("Forbidden to access");
         }
         return true;
     }
@@ -76,11 +78,12 @@ public class ProductService {
         throw new DataNotFoundExeception("Product Not Found");
     }
 
-    public User authCredential(String tokenEnc)  throws UsernameNotFoundException, UserAuthrizationExeception {
+    public User authCredential(String tokenEnc)  throws UsernameNotFoundException, UserAuthrizationExeception, DataNotFoundExeception {
         byte[] token = Base64.getDecoder().decode(tokenEnc);
         String decodedStr = new String(token, StandardCharsets.UTF_8);
         String userName = decodedStr.split(":")[0];
         String passWord = decodedStr.split(":")[1];
+        userService.authUsernamePwd(userName,passWord);
         User user = userService.getUserByUsername(userName);
         if(!(PassEncoder().matches(passWord,user.getPassword()))){
             throw new UserAuthrizationExeception("Enter valid password");
