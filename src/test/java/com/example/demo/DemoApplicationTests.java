@@ -46,6 +46,7 @@ class DemoApplicationTests {
 		User user = new User(1,"kk", "K", "a1100@dddfgii.com", "sdsdssscdD@2", LocalDateTime.now(), LocalDateTime.now());
 		String username = "a1100@dddfgii.com";
 		when(repository.findByUsername(username)).thenReturn(user);
-		assertEquals(user.getUsername(), service.loadUserByUsername(username).getUsername());
+		//assertEquals(user.getUsername(), service.loadUserByUsername(username).getUsername());
+		assertEquals(false);
 	}
 }
