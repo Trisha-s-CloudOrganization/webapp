@@ -29,7 +29,7 @@ public class Products {
 
     @NotBlank(message = "enter valid as product_qty")
     @Min(value = 0, message = "Product quality should be more than 0")
-    @Max(value = 2147483647, message = "Product Quantity is too big") // MAX_INT
+    @Max(value = 100, message = "Product Quantity is too big") // MAX_INT
     @Positive(message = "Enter valid product quantity")
     @Digits(message="Number should contain 10 digits.",fraction=0, integer=10)
     private int product_qty; // if product_qty not in range then 500 Internal Server Error
