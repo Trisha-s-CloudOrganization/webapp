@@ -125,8 +125,10 @@ public class ProductController {
             }
             if(products.getId() != 0 || products.getDate_added()!=null || products.getDate_last_updated()!=null)
                 throw new InvalidInputException("Id, creation date, last modified date can not be added");
-            if(products.getProduct_qty() < 1 || products.getProduct_qty() > 2147483647){
-                throw new InvalidInputException(" Product Quantity should be between 1 to 2147483647");
+            if(products.getProduct_qty() !=0) {
+                if (products.getProduct_qty() < 1 || products.getProduct_qty() > 100) {
+                    throw new InvalidInputException(" Product Quantity should be between 1 to 100");
+                }
             }
             productService.isAuthorisedForPut(productId,request.getHeader("Authorization").split(" ")[1], products);
             if(error.hasErrors()) {
@@ -134,7 +136,13 @@ public class ProductController {
                         .collect(Collectors.joining(","));
                 throw new InvalidInputException(response);
             }
-            productService.updateProduct(products,productId);
+            Products p = productService.getProductById(productId);
+            if((products.getProduct_name()!=null) && !products.getProduct_name().isEmpty()) p.setProduct_name(products.getProduct_name());
+            if((products.getDescription()!=null) && !products.getDescription().isEmpty()) p.setDescription(products.getDescription());
+            if((products.getSku()!=null) && !products.getSku().isEmpty()) p.setSku(products.getSku());
+            if((products.getManufacturer()!=null) && !products.getManufacturer().isEmpty()) p.setManufacturer(products.getManufacturer());
+            if(products.getProduct_qty() !=0) p.setProduct_qty(products.getProduct_qty());
+            productService.updateProduct(p,productId);
             return ResponseEntity.status(HttpStatus.CREATED).body("User Updated");
         }
         catch (UserAuthrizationExeception e) {
@@ -179,11 +187,14 @@ public class ProductController {
     }
 
     private void validateProductRequest(Products products) throws InvalidInputException, InvalidProductQty{
+        if(products.getProduct_name()==null || products.getDescription()==null || products.getSku()==null || products.getManufacturer()==null || products.getProduct_qty() == 0){
+            throw new InvalidInputException("Please enter Product name, description, sku, manufacturer, quantity");
+        }
         if(products.getProduct_name().isEmpty() || products.getDescription().isEmpty() || products.getSku().isEmpty() || products.getManufacturer().isEmpty() || products.getProduct_qty() == 0){
             throw new InvalidInputException("Please enter Product name, description, sku, manufacturer, quantity");
         }
-        if(products.getProduct_qty() < 1 || products.getProduct_qty() > 2147483647){
-            throw new InvalidInputException(" Product Quantity should be between 1 to 2147483647");
+        if(products.getProduct_qty() < 1 || products.getProduct_qty() > 100){
+            throw new InvalidInputException(" Product Quantity should be between 1 to 100");
         }
     }
 }
