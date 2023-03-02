@@ -91,7 +91,7 @@ public class UserService implements UserDetailsService{
         String decodedStr = new String(token, StandardCharsets.UTF_8);
         String userName = decodedStr.split(":")[0];
         String passWord = decodedStr.split(":")[1];
-        authUsernamePwd(userName,passWord);
+        authUsernamePwd(userName,passWord);//DataNotFoundExeception
         System.out.println("Value of Token" + " "+ decodedStr);
         if(!userRequest.getUsername().equals(userName)){
             throw new InvalidInputException("Enter correct username");
@@ -109,13 +109,16 @@ public class UserService implements UserDetailsService{
         }
         throw new DataNotFoundExeception("User Not Found");
     }
-    public Boolean authUsernamePwd(String username, String pwd) throws DataNotFoundExeception{
+    public Boolean authUsernamePwd(String username, String pwd) throws DataNotFoundExeception,UserAuthrizationExeception{
         try {
             User user = userRepository.findByUsername(username);
             if (!(PassEncoder().matches(pwd,user.getPassword()))) {
-                throw new DataNotFoundExeception("Invalid Username/password");
+                throw new UserAuthrizationExeception("Invalid Username/password");
             }
-        }catch (Exception e){
+        }catch (UserAuthrizationExeception e){
+            throw new UserAuthrizationExeception("Username not found");
+        }
+        catch (Exception e){
             throw new DataNotFoundExeception("Username not found");
         }
         return null;

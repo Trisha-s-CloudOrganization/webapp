@@ -22,6 +22,8 @@ public class ProductService {
     @Autowired
     UserService userService;
 
+    @Autowired
+    ImageService imageService;
     public Products saveProduct(Products products){
         return productRepository.save(products);
     }
@@ -31,6 +33,7 @@ public class ProductService {
     }
 
     public void deleteProduct(int productId) throws DataNotFoundExeception{
+        imageService.deleteImagesbyProdId(productId);
         productRepository.delete(getProductById(productId));
     }
 
