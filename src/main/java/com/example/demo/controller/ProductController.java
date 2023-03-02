@@ -121,7 +121,7 @@ public class ProductController {
     public ResponseEntity<?> updateProductPatch(@PathVariable int productId , @RequestBody Products products, HttpServletRequest request, Errors error) {
         try {
             if(productId == 0) {
-                throw new InvalidInputException("Enter Valid User Id");
+                throw new InvalidInputException("Enter Valid Product Id");
             }
             if(products.getId() != 0 || products.getDate_added()!=null || products.getDate_last_updated()!=null)
                 throw new InvalidInputException("Id, creation date, last modified date can not be added");
