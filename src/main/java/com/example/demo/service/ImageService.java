@@ -31,7 +31,7 @@ public class ImageService {
     private AmazonS3 s3client;
     @Autowired
     private ImageRepository imageRepository;
-    @Value("${aws.bucketName}")
+    @Value("${aws.s3.bucketName}")
     private String bucketName;
 
     //get all images under productid
