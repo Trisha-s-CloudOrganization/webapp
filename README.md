@@ -1,6 +1,6 @@
 # CSYE6225 - Cloud Computing Assignment 1
 
-Web application- SpringBoot<br/>
+Web application - SpringBoot<br/>
 
 Prerequisites<br/>
 JAVA: jdk 17, SpringBoot version 3.x.x<br/>
