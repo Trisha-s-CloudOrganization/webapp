@@ -1,0 +1,12 @@
+2023-03-30T15:35:05.147-04:00  INFO 23663 --- [main] com.example.demo.DemoApplicationTests    : Starting DemoApplicationTests using Java 19.0.1 with PID 23663 (started by trishaghorpade in /Users/trishaghorpade/Cloud_Computing/Assignment7/webapp)
+2023-03-30T15:35:05.151-04:00  INFO 23663 --- [main] com.example.demo.DemoApplicationTests    : No active profile set, falling back to 1 default profile: "default"
+2023-03-30T15:35:05.207-04:00  INFO 23663 --- [main] com.example.demo.DemoApplicationTests    : Started DemoApplicationTests in 0.192 seconds (process running for 0.566)
+2023-03-30T15:42:11.685-04:00  INFO 23724 --- [main] com.example.demo.DemoApplicationTests    : Starting DemoApplicationTests using Java 19.0.1 with PID 23724 (started by trishaghorpade in /Users/trishaghorpade/Cloud_Computing/Assignment7/webapp)
+2023-03-30T15:42:11.686-04:00  INFO 23724 --- [main] com.example.demo.DemoApplicationTests    : No active profile set, falling back to 1 default profile: "default"
+2023-03-30T15:42:11.741-04:00  INFO 23724 --- [main] com.example.demo.DemoApplicationTests    : Started DemoApplicationTests in 0.188 seconds (process running for 0.55)
+2023-03-30T15:44:48.437-04:00  INFO 23802 --- [main] com.example.demo.DemoApplicationTests    : Starting DemoApplicationTests using Java 19.0.1 with PID 23802 (started by trishaghorpade in /Users/trishaghorpade/Cloud_Computing/Assignment7/webapp)
+2023-03-30T15:44:48.438-04:00  INFO 23802 --- [main] com.example.demo.DemoApplicationTests    : No active profile set, falling back to 1 default profile: "default"
+2023-03-30T15:44:48.490-04:00  INFO 23802 --- [main] com.example.demo.DemoApplicationTests    : Started DemoApplicationTests in 0.183 seconds (process running for 0.55)
+2023-03-30T21:38:46.546-04:00  INFO 26778 --- [main] com.example.demo.DemoApplicationTests    : Starting DemoApplicationTests using Java 19.0.1 with PID 26778 (started by trishaghorpade in /Users/trishaghorpade/Cloud_Computing/Assignment7/webapp)
+2023-03-30T21:38:46.547-04:00  INFO 26778 --- [main] com.example.demo.DemoApplicationTests    : No active profile set, falling back to 1 default profile: "default"
+2023-03-30T21:38:46.604-04:00  INFO 26778 --- [main] com.example.demo.DemoApplicationTests    : Started DemoApplicationTests in 0.194 seconds (process running for 0.568)
