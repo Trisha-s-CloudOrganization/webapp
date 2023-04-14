@@ -50,6 +50,9 @@ A user can only update their own account information.<br/>
 Get User Information<br/>
 As a user, I want to get my account information. Response payload should return all fields for the user except for password.<br/>
 
+cmd to import certificate: <br/>
+aws acm import-certificate --certificate fileb:///Users/trishaghorpade/Cloud_Computing/prod_trishaghorpade16.me/prod_trishaghorpade16_me.crt --certificate-chain fileb:///Users/trishaghorpade/Cloud_Computing/prod_trishaghorpade16.me//prod_trishaghorpade16_me.ca-bundle --private-key fileb:///Users/trishaghorpade/Cloud_Computing/prod_trishaghorpade16.me/private.pem --profile demo<br/>
+
 API - <br/>
 'http://localhost:8080/v1/user'<br/>
 'http://localhost:8080/v1/user/{userid}'<br/>

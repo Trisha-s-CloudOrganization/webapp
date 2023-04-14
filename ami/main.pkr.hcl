@@ -87,7 +87,10 @@ build {
   provisioner "shell" {
     script = "script.sh"
   }
-
+  post-processor "manifest"{
+   output="manifest.json"
+   strip_path=true
+  }
   // provisioner "shell" {
   //   inline = [
   //     "sudo chmod 770 /home/ec2-user/webapp-0.0.1-SNAPSHOT.jar",
