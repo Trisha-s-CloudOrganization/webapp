@@ -29,7 +29,7 @@ public class SpringSecurityConfiguration {
             http.csrf()
                     .disable()
                     .authorizeRequests()
-                    .requestMatchers("/v1/user/*")
+                    .requestMatchers("/v1/user/*","/v1/product/*")
                     .authenticated()
                     .anyRequest()
                     .permitAll()
