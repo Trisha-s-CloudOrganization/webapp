@@ -64,7 +64,7 @@ public class UserController {
     }
     
     @PostMapping("/v1/user/t")
-    public ResponseEntity<?>  addUser(@Valid @RequestBody User user , BindingResult errors){
+    public ResponseEntity<?>  addUserT(@Valid @RequestBody User user , BindingResult errors){
         UserStatus userStatus;
         statsDClient.incrementCounter("v1.user.post");
         try {
