@@ -62,6 +62,30 @@ public class UserController {
             return new ResponseEntity<>(UserConstants.InternalErr,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    @PostMapping("/v1/user/t")
+    public ResponseEntity<?>  addUser(@Valid @RequestBody User user , BindingResult errors){
+        UserStatus userStatus;
+        statsDClient.incrementCounter("v1.user.post");
+        try {
+            if (user.getId() != 0 || user.getAccount_created() != null || user.getAccount_updated() != null)
+                throw new InvalidInputException("Id, creation date, last modified date can not be modified");
+            if (errors.hasErrors()) {
+                userStatus = userService.getUserStatus(errors);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userStatus);
+            } else {
+                LOGGER.info("Valid Data received to upload for user:{ "+user+"} in S3 at UserController:addUser");
+                return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(user));
+            }
+        } catch (InvalidInputException e) {
+            LOGGER.warn("Invalid Input Exception for user:"+user+" in UserController:addUser. Exception: "+e);
+            return new ResponseEntity<>( e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+        catch(Exception e) {
+            LOGGER.error("Internal server error in UserController:addUser. Exception = "+e);
+            return new ResponseEntity<>(UserConstants.InternalErr,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     //update user by UUID id
     @RequestMapping(path = "/v1/user/{userId}", method = RequestMethod.PUT)
@@ -129,4 +153,7 @@ public class UserController {
     }
     @RequestMapping(path = "/healthz", method = RequestMethod.GET)
     public void healthZ() {}
+    
+    @RequestMapping(path = "/healthc", method = RequestMethod.GET)
+    public void healthNew() {}
 }
